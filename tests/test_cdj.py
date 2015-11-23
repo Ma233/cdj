@@ -1,19 +1,24 @@
+import socket
 import cdj
 
-
-BAD_SERVER = 'localhost:10000'
-GOOD_SERVER = 'localhost:10001'
-
-
-@cdj.call(server=GOOD_SERVER)
-def foo():
-    return 'foo fallback'
+HOST = socket.gethostname()
+BAD_SERVER = (HOST, 10000)
+GOOD_SERVER = (HOST, 10001)
 
 
-@cdj.call(server=BAD_SERVER)
-def bar():
-    return 'bar fallback'
+def test_pong():
+
+    @cdj.call(server=GOOD_SERVER)
+    def foo():
+        return 'foo fallback'
+
+    assert foo() == 'pong'
 
 
-assert foo() == 'pong'
-assert bar() == 'bar fallback'
+def test_fallback():
+
+    @cdj.call(server=BAD_SERVER)
+    def bar():
+        return 'bar fallback'
+
+    assert bar() == 'bar fallback'

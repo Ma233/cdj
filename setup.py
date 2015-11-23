@@ -49,4 +49,9 @@ setup(
     install_requires=[],
     tests_require=['pytest'],
     cmdclass={'test': PyTest},
+    entry_points={
+        'console_scripts': [
+            'cdjumper = cdj.server:serve',
+        ],
+    },
 )
